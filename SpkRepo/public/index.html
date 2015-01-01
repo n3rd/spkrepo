@@ -1,0 +1,88 @@
+﻿<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+    <title>Synology Packages Repository</title>
+    <link rel="stylesheet" href="//maxcdn.bootstrapcdn.com/bootstrap/3.3.1/css/bootstrap.min.css">
+    <style type="text/css">
+        /* Sticky footer styles
+        -------------------------------------------------- */
+        html {
+            position: relative;
+            min-height: 100%;
+        }
+
+        body {
+            /* Margin bottom by footer height */
+            margin-bottom: 60px;
+        }
+
+        footer {
+            position: absolute;
+            bottom: 0;
+            width: 100%;
+            /* Set the fixed height of the footer here */
+            height: 60px;
+            background-color: #f5f5f5;
+        }
+
+
+        /* Custom page CSS
+        -------------------------------------------------- */
+        /* Not required for template or sticky footer method. */
+
+        body > .container {
+            padding: 60px 15px 0;
+        }
+
+        .container .text-muted {
+            margin: 20px 0;
+        }
+
+        footer > .container {
+            padding-right: 15px;
+            padding-left: 15px;
+        }
+
+        code {
+            font-size: 80%;
+        }
+    </style>
+</head>
+<body>
+    <nav class="navbar navbar-default navbar-fixed-top">
+        <div class="container">
+            <div class="navbar-header">
+                <a class="navbar-brand" href="#">Synology Packages Repository</a>
+            </div>
+        </div>
+    </nav>
+
+    <div class="container">
+        <div class="well">To use this repository add <strong><script>document.write(window.location.protocol + "//" + window.location.host);</script></strong> to your Package Center Sources</div>
+
+        <div class="row packages">
+
+        </div>
+    </div>
+
+    <footer>
+        <div class="container">
+            <p class="text-muted">
+                Use at your own risk.
+            </p>
+        </div>
+    </footer>
+
+    <script src="//code.jquery.com/jquery-1.11.2.min.js"></script>
+    <script>
+        $.post("/", {
+            arch: 'noarch',
+            language: 'nld'
+        }).then(function (packages) {
+            $.each(packages, function (_, spk) {
+                $(".packages").append($('<div class="col-xs-12"><div class="panel panel-primary"><div class="panel-heading"><h3 class="panel-title">' + spk.dname + '</h3></div><div class="panel-body clearfix"><img class="pull-left" src="data:image/png;base64,' + spk.icon + '" />' + spk.desc + '</div><div class="panel-footer">v' + spk.version + ' by ' + spk.maintainer + '</div></div></div>'));
+            });
+        });
+    </script>
+</body>
+</html>
