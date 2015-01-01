@@ -1,0 +1,5 @@
+#!/bin/sh
+
+INSTALL_DIR="/usr/local/spkrepo"
+
+rm ${INSTALL_DIR}

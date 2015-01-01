@@ -1,0 +1,5 @@
+#!/bin/sh
+
+INSTALL_DIR="/usr/local/spkrepo"
+
+ln -s ${SYNOPKG_PKGDEST} ${INSTALL_DIR}

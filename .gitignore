@@ -190,3 +190,4 @@ ModelManifest.xml
 
 # Project Specific
 SpkRepo/App_Data/*.spk
+artifacts/

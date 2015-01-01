@@ -1,0 +1,92 @@
+#!/bin/sh
+MONO="/usr/local/mono/bin/mono"
+EXE=/volume1/homes/Boaz/SpkRepo/SpkRepo.SelfHost.exe
+USER="root"
+PIDFILE=/tmp/spkrepo.pid
+
+start() {
+	if status; then
+		echo "Synology Package Server is already running"
+	else
+		echo "Starting Synology Package Server ..."
+		su $USER -c "$MONO $EXE > /dev/null &"
+		ps | grep "$EXE" | grep -v grep | awk '{print $1}' > $PIDFILE
+	fi
+}
+
+stop() {
+	if status; then
+		echo "Stopping Synology Package Server ..."
+		kill `cat ${PIDFILE}`
+		wait_for_status 1 20
+		if [ $? -eq 1 ]; then
+			kill -9 `cat ${PIDFILE}`
+		fi
+		rm -f ${PID_FILES}
+	else
+		echo "Synology Package Server is not running"
+	fi
+}
+
+status () {
+	if [ -f ${PIDFILE} ] && kill -0 `cat ${PIDFILE}` > /dev/null 2>&1; then
+		return
+	fi
+    rm -f ${PIDFILE}
+    return 1
+}
+
+wait_for_status () {
+    counter=$2
+    while [ ${counter} -gt 0 ]; do
+        status
+        [ $? -eq $1 ] && return
+        let counter=counter-1
+        sleep 1
+    done
+    return 1
+}
+
+print_status() {
+	if status; then
+		echo "Synology Package Server is running"
+		exit 0
+	else
+		echo "Synology Package Server is not running"
+		exit 1
+	fi
+}
+
+usage() {
+	echo "Usage: $0 {start|stop|reload|force-reload|restart|status}"
+	exit 1
+}
+
+case "$1" in
+
+    start)
+        start
+		exit $?
+        ;;
+
+    stop)
+		stop
+		exit $?
+        ;;
+	
+	status)
+        print_status
+        ;;
+
+    restart|reload|force-reload)
+        stop
+        start
+		exit $?
+        ;;
+
+    *)
+       usage
+
+esac
+
+exit 0
