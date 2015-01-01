@@ -12,8 +12,9 @@ A .spk package server for synology NAS systems in ASP.NET / C#.
 ### Synology NAS
 
 1. Read the section on **how to build** and create the spk package.
-2. Install the spk on your synology *Package Center -> Manual Installation*
-3. Upload your spk packages to /usr/local/spkrepo/App_Data *(To-Do: make this dir configurable during installation)*
+2. Make sure you installed the mono (beta) package from [SynoCommunity](https://synocommunity.com/)
+3. Install the spk on your synology *Package Center -> Manual Installation*
+4. Upload your spk packages to /usr/local/spkrepo/App_Data *(To-Do: make this dir configurable during installation)*
 
 ## How to build
 
