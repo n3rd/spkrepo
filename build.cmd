@@ -1,5 +1,7 @@
 @echo off
 
+cd /d "%~dp0"
+
 %WINDIR%\Microsoft.NET\Framework\v4.0.30319\msbuild SpkRepo.sln /p:Configuration=Release /t:Rebuild /property:VisualStudioVersion=12.0
 
 utils\7za a -ttar artifacts\package.tar .\SpkRepo.SelfHost\bin\Release\*
