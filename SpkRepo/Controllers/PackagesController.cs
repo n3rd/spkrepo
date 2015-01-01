@@ -9,6 +9,7 @@ using System.Linq;
 using System.Net;
 using System.Net.Http;
 using System.Net.Http.Headers;
+using System.Reflection;
 using System.Text;
 using System.Web.Hosting;
 using System.Web.Http;
@@ -85,7 +86,12 @@ namespace SpkRepo.Controllers
 
         private IEnumerable<SpkFile> GetFiles()
         {
-            foreach (FileInfo fi in new DirectoryInfo(HostingEnvironment.MapPath("~/App_Data/")).EnumerateFiles("*.spk"))
+            string packageDir = HostingEnvironment.MapPath("~/App_Data/");
+
+            if (packageDir == null)
+                packageDir = Path.Combine(Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location), "App_Data");
+
+            foreach (FileInfo fi in new DirectoryInfo(packageDir).EnumerateFiles("*.spk"))
             {
                 using (var tar = File.OpenRead(fi.FullName))
                 {
