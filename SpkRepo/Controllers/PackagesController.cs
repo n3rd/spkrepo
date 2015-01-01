@@ -85,7 +85,7 @@ namespace SpkRepo.Controllers
 
         private IEnumerable<SpkFile> GetFiles()
         {
-            foreach (FileInfo fi in new DirectoryInfo(HostingEnvironment.MapPath("~/App_Data/")).EnumerateFiles())
+            foreach (FileInfo fi in new DirectoryInfo(HostingEnvironment.MapPath("~/App_Data/")).EnumerateFiles("*.spk"))
             {
                 using (var tar = File.OpenRead(fi.FullName))
                 {
