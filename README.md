@@ -1,4 +1,4 @@
 Synology Package Server
 ===
 
-A .spk file server for synology NAS systems in ASP.NET / C#.
+A .spk package server for synology NAS systems in ASP.NET / C#.
