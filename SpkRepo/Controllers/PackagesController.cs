@@ -38,16 +38,25 @@ namespace SpkRepo.Controllers
         }
 
         [Route("file/{fileName}", Name="SpkFile")]
-        public HttpResponseMessage GetSpkFile(string fileName)
+        public IHttpActionResult GetSpkFile(string fileName)
         {
-            var response = new HttpResponseMessage(HttpStatusCode.OK)
+            string filePath = Path.Combine(HostingEnvironment.MapPath("~/App_Data/"), Path.GetFileNameWithoutExtension(fileName) + ".spk");
+
+            if (File.Exists(filePath))
             {
-                Content = new StreamContent(File.OpenRead(Path.Combine(HostingEnvironment.MapPath("~/App_Data/"), fileName)))
-            };
+                var response = new HttpResponseMessage(HttpStatusCode.OK)
+                {
+                    Content = new StreamContent(File.OpenRead(filePath))
+                };
 
-            response.Content.Headers.ContentType = new MediaTypeHeaderValue("application/octet-stream");
+                response.Content.Headers.ContentType = new MediaTypeHeaderValue("application/octet-stream");
 
-            return response;
+                return ResponseMessage(response);
+            }
+            else
+            {
+                return NotFound();
+            }
         }
 
         private IEnumerable<Package> GetPackages()
