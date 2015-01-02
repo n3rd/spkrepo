@@ -1,6 +1,6 @@
 #!/bin/sh
 MONO="/usr/local/mono/bin/mono"
-EXE=/volume1/homes/Boaz/SpkRepo/SpkRepo.SelfHost.exe
+EXE=/usr/local/spkrepo/SpkRepo.SelfHost.exe
 USER="root"
 PIDFILE=/tmp/spkrepo.pid
 
