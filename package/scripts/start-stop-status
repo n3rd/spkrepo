@@ -1,7 +1,6 @@
 #!/bin/sh
 MONO="/usr/local/mono/bin/mono"
 EXE=/usr/local/spkrepo/SpkRepo.SelfHost.exe
-USER="root"
 PIDFILE=/tmp/spkrepo.pid
 
 start() {
@@ -9,8 +8,8 @@ start() {
 		echo "Synology Package Server is already running"
 	else
 		echo "Starting Synology Package Server ..."
-		su $USER -c "$MONO $EXE > /dev/null &"
-		ps | grep "$EXE" | grep -v grep | awk '{print $1}' > $PIDFILE
+		${MONO} ${EXE} > /dev/null 2>&1 &
+		echo $! > ${PIDFILE}
 	fi
 }
 
