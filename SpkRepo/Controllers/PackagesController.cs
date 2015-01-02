@@ -4,6 +4,7 @@ using SpkRepo.Models;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
+using System.Configuration;
 using System.IO;
 using System.Linq;
 using System.Net;
@@ -18,6 +19,32 @@ namespace SpkRepo.Controllers
 {
     public class PackagesController : ApiController
     {
+
+        private static string PackageDir
+        {
+            get
+            {
+                string dir;
+
+                if(HostingEnvironment.MapPath("~/App_Data/") != null)
+                {
+                    dir = HostingEnvironment.MapPath("~/App_Data/");
+                }
+                else
+                {
+                    dir = ConfigurationManager.AppSettings["SpkRepo:packageDir"];
+
+                    if (string.IsNullOrEmpty(dir))
+                        throw new ArgumentNullException("SpkRepo:packageDir appSetting");
+
+                    if (!Path.IsPathRooted(dir))
+                        dir = Path.Combine(Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location), dir);
+
+                }
+
+                return dir;
+            }
+        }
 
         public class RequestParams
         {
@@ -41,7 +68,7 @@ namespace SpkRepo.Controllers
         [Route("file/{fileName}", Name="SpkFile")]
         public IHttpActionResult GetSpkFile(string fileName)
         {
-            string filePath = Path.Combine(HostingEnvironment.MapPath("~/App_Data/"), Path.GetFileNameWithoutExtension(fileName) + ".spk");
+            string filePath = Path.Combine(PackageDir, Path.GetFileNameWithoutExtension(fileName) + ".spk");
 
             if (File.Exists(filePath))
             {
@@ -86,12 +113,7 @@ namespace SpkRepo.Controllers
 
         private IEnumerable<SpkFile> GetFiles()
         {
-            string packageDir = HostingEnvironment.MapPath("~/App_Data/");
-
-            if (packageDir == null)
-                packageDir = Path.Combine(Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location), "App_Data");
-
-            foreach (FileInfo fi in new DirectoryInfo(packageDir).EnumerateFiles("*.spk"))
+            foreach (FileInfo fi in new DirectoryInfo(PackageDir).EnumerateFiles("*.spk"))
             {
                 using (var tar = File.OpenRead(fi.FullName))
                 {

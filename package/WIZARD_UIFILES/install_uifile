@@ -1,0 +1,19 @@
+[{
+    "step_title": "Configuration",
+    "items": [{
+        "type": "textfield",
+        "desc": "Package directory (make sure this directory exists before you continue)",
+        "subitems": [{
+            "key": "wizard_package_dir",
+            "desc": "Package directory",
+            "defaultValue": "/volume1/public/packages",
+            "validator": {
+                "allowBlank": false,
+                "regex": {
+                    "expr": "/^\\\/volume[0-9]+\\\//",
+                    "errorText": "Path should begin with /volume?/ with ? the number of the volume"
+                }
+            }
+        }]
+    }]
+}]

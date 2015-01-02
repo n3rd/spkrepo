@@ -1,0 +1,8 @@
+#!/bin/sh
+
+if [ ! -d ${wizard_package_dir:=/volume1/public/packages} ]; then
+	echo "Package directory ${wizard_package_dir} does not exist."
+	exit 1
+fi
+
+exit 0
